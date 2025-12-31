@@ -16,9 +16,6 @@ export default function NewProductPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    price: '',
-    originalPrice: '',
-    stock: '',
     brand: '',
     category: '',
     skinType: '',
@@ -48,9 +45,6 @@ export default function NewProductPage() {
         name: formData.name,
         description: formData.description,
         images: imageUrls,
-        price: Number(formData.price),
-        originalPrice: formData.originalPrice ? Number(formData.originalPrice) : undefined,
-        stock: Number(formData.stock),
         brand: formData.brand,
         category: formData.category,
         skinType: formData.skinType.split(',').map(s => s.trim()),
@@ -60,6 +54,8 @@ export default function NewProductPage() {
         reviewCount: 0,
         featured: formData.featured,
         bestSeller: formData.bestSeller,
+        status: 'draft',
+        tags: [],
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -99,26 +95,6 @@ export default function NewProductPage() {
             label="Brand"
             value={formData.brand}
             onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-            required
-          />
-          <Input
-            label="Price (Rs.)"
-            type="number"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            required
-          />
-          <Input
-            label="Original Price (Rs.) - Optional"
-            type="number"
-            value={formData.originalPrice}
-            onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
-          />
-          <Input
-            label="Stock"
-            type="number"
-            value={formData.stock}
-            onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
             required
           />
           <Input

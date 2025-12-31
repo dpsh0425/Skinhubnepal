@@ -20,9 +20,6 @@ export default function EditProductPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    price: '',
-    originalPrice: '',
-    stock: '',
     brand: '',
     category: '',
     skinType: '',
@@ -42,9 +39,6 @@ export default function EditProductPage() {
         setFormData({
           name: data.name,
           description: data.description,
-          price: data.price.toString(),
-          originalPrice: data.originalPrice?.toString() || '',
-          stock: data.stock.toString(),
           brand: data.brand,
           category: data.category,
           skinType: data.skinType.join(', '),
@@ -84,9 +78,6 @@ export default function EditProductPage() {
         name: formData.name,
         description: formData.description,
         images: imageUrls,
-        price: Number(formData.price),
-        originalPrice: formData.originalPrice ? Number(formData.originalPrice) : undefined,
-        stock: Number(formData.stock),
         brand: formData.brand,
         category: formData.category,
         skinType: formData.skinType.split(',').map(s => s.trim()),
@@ -137,26 +128,6 @@ export default function EditProductPage() {
             label="Brand"
             value={formData.brand}
             onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-            required
-          />
-          <Input
-            label="Price (Rs.)"
-            type="number"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            required
-          />
-          <Input
-            label="Original Price (Rs.) - Optional"
-            type="number"
-            value={formData.originalPrice}
-            onChange={(e) => setFormData({ ...formData, originalPrice: e.target.value })}
-          />
-          <Input
-            label="Stock"
-            type="number"
-            value={formData.stock}
-            onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
             required
           />
           <Input
