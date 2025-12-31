@@ -75,14 +75,14 @@ export default function CartPage() {
                       <button
                         onClick={() => updateQuantity(item.productId, item.quantity + 1)}
                         className="p-1 hover:bg-gray-100 rounded"
-                        disabled={item.quantity >= item.product.stock}
+                        disabled={item.quantity >= item.variant.stock}
                       >
                         <Plus size={16} />
                       </button>
                     </div>
                     <div className="flex items-center gap-4">
                       <span className="font-semibold">
-                        Rs. {(item.product.price * item.quantity).toFixed(2)}
+                        Rs. {(item.variant.price * item.quantity).toFixed(2)}
                       </span>
                       <button
                         onClick={() => removeItem(item.productId)}
