@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { User, Address } from '@/lib/types'
@@ -17,7 +17,8 @@ import { User as UserIcon, MapPin, LogOut, Plus, Trash2 } from 'lucide-react'
 export default function ProfilePage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [user] = useAuthState(auth)
+  const auth = getAuthInstance()
+  const [user] = useAuthState(auth as any)
   const [userData, setUserData] = useState<User | null>(null)
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile')
   const [isEditing, setIsEditing] = useState(false)

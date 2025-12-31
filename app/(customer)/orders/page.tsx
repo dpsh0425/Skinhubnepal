@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { Order } from '@/lib/types'
@@ -16,7 +16,8 @@ import { format } from 'date-fns'
 
 export default function OrdersPage() {
   const router = useRouter()
-  const [user] = useAuthState(auth)
+  const auth = getAuthInstance()
+  const [user] = useAuthState(auth as any)
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
 

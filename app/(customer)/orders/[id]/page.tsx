@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { Order } from '@/lib/types'
@@ -16,7 +16,8 @@ import toast from 'react-hot-toast'
 export default function OrderDetailsPage() {
   const params = useParams()
   const router = useRouter()
-  const [user] = useAuthState(auth)
+  const auth = getAuthInstance()
+  const [user] = useAuthState(auth as any)
   const orderId = params.id as string
   const [order, setOrder] = useState<Order | null>(null)
   const [isLoading, setIsLoading] = useState(true)
