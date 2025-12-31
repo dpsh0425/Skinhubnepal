@@ -3,8 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { getAuthInstance } from '@/lib/firebase/config'
+import { useAuth } from '@/lib/hooks/useAuth'
 
 export const dynamic = 'force-dynamic'
 import { Header } from '@/components/layout/Header'
@@ -22,14 +21,8 @@ import { CreditCard, Wallet, Smartphone, Banknote } from 'lucide-react'
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const [mounted, setMounted] = useState(false)
-  const auth = getAuthInstance()
-  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
+  const { user } = useAuth()
   const items = useCartStore(state => state.items)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
   const getTotal = useCartStore(state => state.getTotal)
   const clearCart = useCartStore(state => state.clearCart)
   const [userData, setUserData] = useState<User | null>(null)

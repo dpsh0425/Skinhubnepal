@@ -2,8 +2,7 @@
 
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { getAuthInstance } from '@/lib/firebase/config'
+import { useAuth } from '@/lib/hooks/useAuth'
 
 export const dynamic = 'force-dynamic'
 import { Header } from '@/components/layout/Header'
@@ -19,15 +18,9 @@ import { User as UserIcon, MapPin, LogOut, Plus, Trash2 } from 'lucide-react'
 function ProfilePageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [mounted, setMounted] = useState(false)
-  const auth = getAuthInstance()
-  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
+  const { user } = useAuth()
   const [userData, setUserData] = useState<User | null>(null)
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile')
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     name: '',

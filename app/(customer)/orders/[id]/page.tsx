@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { getAuthInstance } from '@/lib/firebase/config'
+import { useAuth } from '@/lib/hooks/useAuth'
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { Order } from '@/lib/types'
@@ -16,14 +15,8 @@ import toast from 'react-hot-toast'
 export default function OrderDetailsPage() {
   const params = useParams()
   const router = useRouter()
-  const [mounted, setMounted] = useState(false)
-  const auth = getAuthInstance()
-  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
+  const { user } = useAuth()
   const orderId = params.id as string
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
   const [order, setOrder] = useState<Order | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isCancelling, setIsCancelling] = useState(false)

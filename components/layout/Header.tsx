@@ -1,23 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { getAuthInstance } from '@/lib/firebase/config'
+import { useAuth } from '@/lib/hooks/useAuth'
 import { useCartStore } from '@/lib/store/cartStore'
 import { ShoppingCart, User, Menu, X } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Logo } from './Logo'
 
 export const Header = () => {
-  const [mounted, setMounted] = useState(false)
-  const auth = getAuthInstance()
-  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
+  const { user } = useAuth()
   const itemCount = useCartStore(state => state.getItemCount())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
