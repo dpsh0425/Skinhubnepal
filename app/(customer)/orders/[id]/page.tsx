@@ -16,9 +16,14 @@ import toast from 'react-hot-toast'
 export default function OrderDetailsPage() {
   const params = useParams()
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
   const auth = getAuthInstance()
-  const [user] = useAuthState(auth as any)
+  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
   const orderId = params.id as string
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const [order, setOrder] = useState<Order | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isCancelling, setIsCancelling] = useState(false)

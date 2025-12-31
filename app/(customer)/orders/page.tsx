@@ -18,10 +18,15 @@ import { format } from 'date-fns'
 
 export default function OrdersPage() {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
   const auth = getAuthInstance()
-  const [user] = useAuthState(auth as any)
+  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     if (!user) {

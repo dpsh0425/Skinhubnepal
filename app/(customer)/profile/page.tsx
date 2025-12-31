@@ -19,10 +19,15 @@ import { User as UserIcon, MapPin, LogOut, Plus, Trash2 } from 'lucide-react'
 function ProfilePageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [mounted, setMounted] = useState(false)
   const auth = getAuthInstance()
-  const [user] = useAuthState(auth as any)
+  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
   const [userData, setUserData] = useState<User | null>(null)
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const [isEditing, setIsEditing] = useState(false)
   const [formData, setFormData] = useState({
     name: '',

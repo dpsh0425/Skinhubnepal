@@ -22,9 +22,14 @@ import { CreditCard, Wallet, Smartphone, Banknote } from 'lucide-react'
 
 export default function CheckoutPage() {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
   const auth = getAuthInstance()
-  const [user] = useAuthState(auth as any)
+  const [user] = useAuthState(mounted && auth ? (auth as any) : undefined)
   const items = useCartStore(state => state.items)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const getTotal = useCartStore(state => state.getTotal)
   const clearCart = useCartStore(state => state.clearCart)
   const [userData, setUserData] = useState<User | null>(null)
