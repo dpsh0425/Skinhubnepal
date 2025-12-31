@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { useCartStore } from '@/lib/store/cartStore'
@@ -19,7 +20,8 @@ import { CreditCard, Wallet, Smartphone, Banknote } from 'lucide-react'
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const [user] = useAuthState(auth)
+  const auth = getAuthInstance()
+  const [user] = useAuthState(auth as any)
   const items = useCartStore(state => state.items)
   const getTotal = useCartStore(state => state.getTotal)
   const clearCart = useCartStore(state => state.clearCart)
