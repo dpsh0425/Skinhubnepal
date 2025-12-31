@@ -112,19 +112,12 @@ export const HeroBanner = () => {
                 sizes="100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-              {(banner.title || banner.subtitle) && (
+              {banner.title && (
                 <div className="absolute inset-0 flex items-center">
                   <div className="container mx-auto px-4 md:px-8 text-white">
-                    {banner.title && (
-                      <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-3xl leading-tight">
-                        {banner.title}
-                      </h2>
-                    )}
-                    {banner.subtitle && (
-                      <p className="text-lg md:text-xl lg:text-2xl mb-6 opacity-95 max-w-2xl">
-                        {banner.subtitle}
-                      </p>
-                    )}
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-3xl leading-tight">
+                      {banner.title}
+                    </h2>
                     <Link href={banner.link}>
                       <Button className="bg-white text-primary-600 hover:bg-gray-100 px-6 md:px-8 py-3 md:py-4 text-base md:text-lg font-semibold shadow-xl">
                         Shop Now
@@ -146,19 +139,12 @@ export const HeroBanner = () => {
                 sizes="100vw"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
-              {(banner.title || banner.subtitle) && (
+              {banner.title && (
                 <div className="absolute inset-0 flex items-center">
                   <div className="container mx-auto px-4 md:px-8 text-white">
-                    {banner.title && (
-                      <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-3xl leading-tight">
-                        {banner.title}
-                      </h2>
-                    )}
-                    {banner.subtitle && (
-                      <p className="text-lg md:text-xl lg:text-2xl mb-6 opacity-95 max-w-2xl">
-                        {banner.subtitle}
-                      </p>
-                    )}
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 max-w-3xl leading-tight">
+                      {banner.title}
+                    </h2>
                   </div>
                 </div>
               )}

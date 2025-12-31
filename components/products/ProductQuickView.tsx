@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { Product } from '@/lib/types'
+import { Product, ProductVariant } from '@/lib/types'
 import { X, Star, ShoppingCart, Heart, Minus, Plus, Zap } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cartStore'
 import { Button } from '@/components/ui/Button'
+import { getCollection } from '@/lib/utils/firestore'
 import toast from 'react-hot-toast'
 
 interface ProductQuickViewProps {
@@ -22,7 +23,27 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [isWishlisted, setIsWishlisted] = useState(false)
+  const [firstVariant, setFirstVariant] = useState<ProductVariant | null>(null)
   const addItem = useCartStore(state => state.addItem)
+
+  // Fetch first variant for price display
+  useEffect(() => {
+    if (!product) return
+    const fetchVariant = async () => {
+      try {
+        const variants = await getCollection<ProductVariant>('productVariants')
+        const productVariants = variants.filter(
+          v => v.productId === product.id && v.active && v.stock > 0
+        )
+        if (productVariants.length > 0) {
+          setFirstVariant(productVariants[0])
+        }
+      } catch (error) {
+        console.error('Error fetching variant:', error)
+      }
+    }
+    fetchVariant()
+  }, [product?.id])
 
   useEffect(() => {
     if (isOpen && product) {
@@ -40,14 +61,20 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
   if (!product || !isOpen) return null
 
   const handleAddToCart = () => {
-    addItem(product, quantity)
+    if (!firstVariant) {
+      toast.error('Please select a variant on the product page')
+      return
+    }
+    addItem(product, firstVariant, quantity)
     toast.success(`Added ${quantity} item(s) to cart!`, {
       icon: '🛒',
     })
   }
 
-  const discountPercentage = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  const displayPrice = firstVariant?.price ?? 0
+  const displayOriginalPrice = firstVariant?.originalPrice
+  const discountPercentage = displayOriginalPrice
+    ? Math.round(((displayOriginalPrice - displayPrice) / displayOriginalPrice) * 100)
     : 0
 
   return (
@@ -125,13 +152,19 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
             </div>
 
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-primary-600">
-                Rs. {product.price}
-              </span>
-              {product.originalPrice && (
-                <span className="text-xl text-gray-400 line-through">
-                  Rs. {product.originalPrice}
-                </span>
+              {firstVariant ? (
+                <>
+                  <span className="text-3xl font-bold text-primary-600">
+                    Rs. {displayPrice.toLocaleString()}
+                  </span>
+                  {displayOriginalPrice && (
+                    <span className="text-xl text-gray-400 line-through">
+                      Rs. {displayOriginalPrice.toLocaleString()}
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className="text-lg text-gray-500">Price not available</span>
               )}
             </div>
 
