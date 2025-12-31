@@ -100,12 +100,12 @@ export default function OrderDetailsPage() {
                     <h3 className="font-semibold">{item.product.name}</h3>
                     <p className="text-sm text-gray-500">{item.product.brand}</p>
                     <p className="text-sm text-gray-600 mt-1">
-                      Quantity: {item.quantity} × Rs. {item.product.price}
+                      Quantity: {item.quantity} × Rs. {item.variant.price}
                     </p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold">
-                      Rs. {(item.product.price * item.quantity).toFixed(2)}
+                      Rs. {(item.variant.price * item.quantity).toFixed(2)}
                     </p>
                   </div>
                 </div>

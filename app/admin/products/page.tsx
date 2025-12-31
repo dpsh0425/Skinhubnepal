@@ -71,10 +71,10 @@ export default function AdminProductsPage() {
                   Brand
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Price
+                  Category
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                  Stock
+                  Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Actions
@@ -96,16 +96,16 @@ export default function AdminProductsPage() {
                   </td>
                   <td className="px-6 py-4 font-medium">{product.name}</td>
                   <td className="px-6 py-4 text-gray-600">{product.brand}</td>
-                  <td className="px-6 py-4">Rs. {product.price}</td>
+                  <td className="px-6 py-4 text-gray-600">{product.category}</td>
                   <td className="px-6 py-4">
                     <span
                       className={
-                        product.stock < 10
-                          ? 'text-red-600 font-semibold'
-                          : 'text-gray-600'
+                        product.status === 'published'
+                          ? 'px-2 py-1 text-xs rounded-full bg-green-100 text-green-800'
+                          : 'px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800'
                       }
                     >
-                      {product.stock}
+                      {product.status}
                     </span>
                   </td>
                   <td className="px-6 py-4">

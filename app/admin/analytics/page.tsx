@@ -73,7 +73,7 @@ export default function AnalyticsPage() {
                 }
               }
               productSales[item.productId].quantity += item.quantity
-              productSales[item.productId].revenue += item.product.price * item.quantity
+              productSales[item.productId].revenue += item.variant.price * item.quantity
             })
           }
         })
