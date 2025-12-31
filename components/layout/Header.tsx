@@ -2,14 +2,15 @@
 
 import Link from 'next/link'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import { useCartStore } from '@/lib/store/cartStore'
 import { ShoppingCart, User, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { Logo } from './Logo'
 
 export const Header = () => {
-  const [user] = useAuthState(auth ?? undefined)
+  const auth = getAuthInstance()
+  const [user] = useAuthState(auth ? (auth as any) : undefined)
   const itemCount = useCartStore(state => state.getItemCount())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 

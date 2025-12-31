@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Review } from '@/lib/types'
 import { Star, CheckCircle, Edit, Trash2 } from 'lucide-react'
 import { deleteDocument } from '@/lib/utils/firestore'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
 import { ReviewForm } from './ReviewForm'
@@ -26,7 +26,8 @@ export const ProductReviews = ({
 }: ProductReviewsProps) => {
   const [editingReview, setEditingReview] = useState<Review | null>(null)
   const [showReviewForm, setShowReviewForm] = useState(false)
-  const currentUser = auth?.currentUser
+  const auth = getAuthInstance()
+  const currentUser = auth?.currentUser || null
   const currentUserId = currentUser?.uid
   const currentUserName = currentUser?.displayName || currentUser?.email?.split('@')[0] || 'User'
 

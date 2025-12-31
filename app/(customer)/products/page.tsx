@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+
+export const dynamic = 'force-dynamic'
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { StickyCart } from '@/components/layout/StickyCart'
@@ -26,7 +28,7 @@ import {
   Search
 } from 'lucide-react'
 
-export default function ProductsPage() {
+function ProductsPageContent() {
   const searchParams = useSearchParams()
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
@@ -585,5 +587,21 @@ export default function ProductsPage() {
         }
       `}</style>
     </div>
+  )
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-skincare-light">
+        <Header />
+        <main className="container mx-auto px-4 py-12 pb-24 text-center">
+          <p>Loading...</p>
+        </main>
+        <BottomNav />
+      </div>
+    }>
+      <ProductsPageContent />
+    </Suspense>
   )
 }

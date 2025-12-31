@@ -8,6 +8,8 @@ import { SkinTypeCollections } from '@/components/home/SkinTypeCollections'
 import { Testimonials } from '@/components/home/Testimonials'
 import { WhyChooseUs } from '@/components/home/WhyChooseUs'
 
+export const dynamic = 'force-dynamic'
+
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">

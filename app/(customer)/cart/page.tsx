@@ -3,6 +3,8 @@
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { useCartStore } from '@/lib/store/cartStore'
+
+export const dynamic = 'force-dynamic'
 import { Button } from '@/components/ui/Button'
 import Image from 'next/image'
 import Link from 'next/link'

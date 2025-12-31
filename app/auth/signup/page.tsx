@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import { getUserData } from '@/lib/utils/auth'
 import { User as FirebaseUser } from 'firebase/auth'
 import Link from 'next/link'
@@ -19,6 +19,7 @@ export default function SignupPage() {
   
   // Listen to auth state changes
   useEffect(() => {
+    const auth = getAuthInstance()
     if (!auth) {
       setLoading(false)
       return
@@ -39,6 +40,7 @@ export default function SignupPage() {
 
   // Redirect if already logged in
   useEffect(() => {
+    const auth = getAuthInstance()
     if (loading || !auth) return // Wait for auth to initialize
     
     const checkUserAndRedirect = async () => {

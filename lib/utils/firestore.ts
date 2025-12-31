@@ -13,7 +13,7 @@ import {
   Timestamp,
   QueryConstraint,
 } from 'firebase/firestore'
-import { db } from '../firebase/config'
+import { getDbInstance } from '../firebase/config'
 
 // Helper to convert Firestore timestamps
 export const convertTimestamp = (timestamp: any) => {
@@ -29,6 +29,11 @@ export const convertTimestamp = (timestamp: any) => {
 // Generic get document
 export const getDocument = async <T>(collectionName: string, docId: string): Promise<T | null> => {
   try {
+    const db = getDbInstance()
+    if (!db) {
+      console.error('Firestore not initialized')
+      return null
+    }
     const docRef = doc(db, collectionName, docId)
     const docSnap = await getDoc(docRef)
     if (docSnap.exists()) {
@@ -57,6 +62,11 @@ export const getCollection = async <T>(
   constraints: QueryConstraint[] = []
 ): Promise<T[]> => {
   try {
+    const db = getDbInstance()
+    if (!db) {
+      console.error('Firestore not initialized')
+      return []
+    }
     const q = query(collection(db, collectionName), ...constraints)
     const querySnapshot = await getDocs(q)
     return querySnapshot.docs.map(doc => {
@@ -85,6 +95,11 @@ export const setDocument = async (
   data: any
 ): Promise<boolean> => {
   try {
+    const db = getDbInstance()
+    if (!db) {
+      console.error('Firestore not initialized')
+      return false
+    }
     const docRef = doc(db, collectionName, docId)
     // Remove undefined values (Firestore doesn't allow undefined)
     const cleanData = Object.fromEntries(
@@ -117,6 +132,11 @@ export const updateDocument = async (
   data: any
 ): Promise<boolean> => {
   try {
+    const db = getDbInstance()
+    if (!db) {
+      console.error('Firestore not initialized')
+      return false
+    }
     const docRef = doc(db, collectionName, docId)
     // Remove undefined values (Firestore doesn't allow undefined)
     const cleanData = Object.fromEntries(
@@ -139,6 +159,11 @@ export const deleteDocument = async (
   docId: string
 ): Promise<boolean> => {
   try {
+    const db = getDbInstance()
+    if (!db) {
+      console.error('Firestore not initialized')
+      return false
+    }
     const docRef = doc(db, collectionName, docId)
     await deleteDoc(docRef)
     return true

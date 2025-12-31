@@ -1,9 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { getAuthInstance } from '@/lib/firebase/config'
+
+export const dynamic = 'force-dynamic'
 import { Header } from '@/components/layout/Header'
 import { BottomNav } from '@/components/layout/BottomNav'
 import { User, Address } from '@/lib/types'
@@ -14,7 +16,7 @@ import { Input } from '@/components/ui/Input'
 import toast from 'react-hot-toast'
 import { User as UserIcon, MapPin, LogOut, Plus, Trash2 } from 'lucide-react'
 
-export default function ProfilePage() {
+function ProfilePageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const auth = getAuthInstance()
@@ -378,3 +380,18 @@ export default function ProfilePage() {
   )
 }
 
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-skincare-light">
+        <Header />
+        <main className="container mx-auto px-4 py-12 pb-24 text-center">
+          <p>Loading...</p>
+        </main>
+        <BottomNav />
+      </div>
+    }>
+      <ProfilePageContent />
+    </Suspense>
+  )
+}

@@ -5,7 +5,7 @@ import {
   signOut,
   User as FirebaseUser,
 } from 'firebase/auth'
-import { auth } from '../firebase/config'
+import { getAuthInstance } from '../firebase/config'
 import { setDocument, getDocument } from './firestore'
 import { User } from '../types'
 
@@ -15,6 +15,11 @@ export const signUp = async (
   name: string
 ): Promise<{ user: FirebaseUser | null; error: string | null }> => {
   try {
+    const auth = getAuthInstance()
+    if (!auth) {
+      return { user: null, error: 'Firebase auth not initialized' }
+    }
+
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     const user = userCredential.user
 
@@ -41,6 +46,7 @@ export const login = async (
   password: string
 ): Promise<{ user: FirebaseUser | null; userData: User | null; error: string | null }> => {
   try {
+    const auth = getAuthInstance()
     if (!auth) {
       return { user: null, userData: null, error: 'Firebase auth not initialized' }
     }
@@ -65,6 +71,7 @@ export const login = async (
 }
 
 export const logout = async (): Promise<void> => {
+  const auth = getAuthInstance()
   if (auth) {
     await signOut(auth)
   }
@@ -72,6 +79,10 @@ export const logout = async (): Promise<void> => {
 
 export const resetPassword = async (email: string): Promise<{ error: string | null }> => {
   try {
+    const auth = getAuthInstance()
+    if (!auth) {
+      return { error: 'Firebase auth not initialized' }
+    }
     await sendPasswordResetEmail(auth, email)
     return { error: null }
   } catch (error: any) {

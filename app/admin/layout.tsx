@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '@/lib/firebase/config'
+import { getAuthInstance } from '@/lib/firebase/config'
 import { getUserData } from '@/lib/utils/auth'
 import { User } from '@/lib/types'
 import Link from 'next/link'
@@ -59,6 +59,7 @@ export default function AdminLayout({
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
 
   useEffect(() => {
+    const auth = getAuthInstance()
     if (!auth) {
       router.push('/auth/login')
       return
