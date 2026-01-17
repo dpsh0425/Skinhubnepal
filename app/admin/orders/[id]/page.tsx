@@ -93,6 +93,7 @@ export default function OrderDetailsPage() {
                       src={item.product.images[0] || '/placeholder-product.jpg'}
                       alt={item.product.name}
                       fill
+                      sizes="96px"
                       className="object-cover rounded"
                     />
                   </div>

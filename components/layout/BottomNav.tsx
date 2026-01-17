@@ -4,10 +4,16 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, ShoppingBag, ShoppingCart, User, Package } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cartStore'
+import { useState, useEffect } from 'react'
 
 export const BottomNav = () => {
   const pathname = usePathname()
   const itemCount = useCartStore(state => state.getItemCount())
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const navItems = [
     { href: '/home', icon: Home, label: 'Home' },
@@ -43,7 +49,7 @@ export const BottomNav = () => {
                   strokeWidth={isActive ? 2.5 : 2}
                 />
                 {/* Facebook-style notification badge */}
-                {hasBadge && (
+                {mounted && hasBadge && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] flex items-center justify-center px-1 shadow-lg border-2 border-white">
                     {badge > 99 ? '99+' : badge}
                   </span>

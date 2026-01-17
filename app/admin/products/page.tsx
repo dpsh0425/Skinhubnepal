@@ -90,6 +90,7 @@ export default function AdminProductsPage() {
                         src={product.images[0] || '/placeholder-product.jpg'}
                         alt={product.name}
                         fill
+                        sizes="64px"
                         className="object-cover rounded"
                       />
                     </div>

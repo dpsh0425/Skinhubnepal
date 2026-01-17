@@ -86,7 +86,11 @@ function ProductsPageContent() {
   }, [allBrands, brandSearchQuery, products])
 
   const categories = useMemo(() => Array.from(new Set(products.map(p => p.category))), [products])
-  const skinTypes = useMemo(() => Array.from(new Set(products.flatMap(p => p.skinType))), [products])
+  // Normalize skin types to lowercase and remove duplicates
+  const skinTypes = useMemo(() => {
+    const allTypes = products.flatMap(p => p.skinType.map(t => t.toLowerCase()))
+    return Array.from(new Set(allTypes))
+  }, [products])
 
   useEffect(() => {
     let filtered = [...products]
@@ -106,9 +110,11 @@ function ProductsPageContent() {
       filtered = filtered.filter(p => p.brand === selectedBrand)
     }
 
-    // Skin type filter
+    // Skin type filter (case-insensitive)
     if (selectedSkinType) {
-      filtered = filtered.filter(p => p.skinType.includes(selectedSkinType))
+      filtered = filtered.filter(p => 
+        p.skinType.some(type => type.toLowerCase() === selectedSkinType.toLowerCase())
+      )
     }
 
     // Category filter
@@ -484,12 +490,13 @@ function ProductsPageContent() {
               <>
                 {viewMode === 'grid' && (
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
-                    {paginatedProducts.map((product) => (
+                    {paginatedProducts.map((product, index) => (
                       <ProductCard
                         key={product.id}
                         product={product}
                         variant="default"
                         onQuickView={setQuickViewProduct}
+                        priority={index < 6}
                       />
                     ))}
                   </div>

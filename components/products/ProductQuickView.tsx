@@ -102,6 +102,7 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
                 src={product.images[selectedImageIndex] || '/placeholder-product.jpg'}
                 alt={product.name}
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
               {discountPercentage > 0 && (
@@ -127,6 +128,7 @@ export const ProductQuickView: React.FC<ProductQuickViewProps> = ({
                       src={image}
                       alt={`${product.name} ${index + 1}`}
                       fill
+                      sizes="(max-width: 768px) 25vw, 12.5vw"
                       className="object-cover"
                     />
                   </button>

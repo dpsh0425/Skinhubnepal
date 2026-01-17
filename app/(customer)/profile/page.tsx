@@ -18,7 +18,7 @@ import { User as UserIcon, MapPin, LogOut, Plus, Trash2 } from 'lucide-react'
 function ProfilePageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const [userData, setUserData] = useState<User | null>(null)
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile')
   const [isEditing, setIsEditing] = useState(false)
@@ -38,6 +38,9 @@ function ProfilePageContent() {
   const [showAddressForm, setShowAddressForm] = useState(false)
 
   useEffect(() => {
+    // Wait for auth to finish loading before checking
+    if (loading) return
+    
     if (!user) {
       router.push('/auth/login')
       return
@@ -54,7 +57,7 @@ function ProfilePageContent() {
       }
     }
     fetchUserData()
-  }, [user, router])
+  }, [user, router, loading])
 
   const handleUpdateProfile = async () => {
     if (!user) return
@@ -133,6 +136,15 @@ function ProfilePageContent() {
   const handleLogout = async () => {
     await logoutUser()
     router.push('/auth/login')
+  }
+
+  // Show loading while auth is loading
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
   }
 
   if (!user || !userData) {

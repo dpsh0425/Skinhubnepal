@@ -17,11 +17,14 @@ import { format } from 'date-fns'
 
 export default function OrdersPage() {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    // Wait for auth to finish loading before checking
+    if (loading) return
+    
     if (!user) {
       router.push('/auth/login')
       return
@@ -48,8 +51,18 @@ export default function OrdersPage() {
     }
 
     fetchOrders()
-  }, [user, router])
+  }, [user, router, loading])
 
+  // Show loading while auth is loading
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    )
+  }
+
+  // Redirect handled in useEffect, but show loading if no user
   if (!user) {
     return null
   }

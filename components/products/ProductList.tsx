@@ -71,7 +71,7 @@ export const ProductList: React.FC<ProductListProps> = ({ products, onQuickView 
 
   return (
     <div className="space-y-4">
-      {products.map((product) => {
+      {products.map((product, index) => {
         const isWishlisted = wishlisted.has(product.id)
         const variant = variantsMap[product.id]
         const displayPrice = variant?.price ?? 0
@@ -93,6 +93,8 @@ export const ProductList: React.FC<ProductListProps> = ({ products, onQuickView 
                   src={product.images[0] || '/placeholder-product.jpg'}
                   alt={product.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  priority={index < 3}
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 {discountPercentage > 0 && (

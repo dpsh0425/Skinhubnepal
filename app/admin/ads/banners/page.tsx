@@ -199,6 +199,7 @@ export default function AdminBannersPage() {
                 src={banner.image}
                 alt={banner.title}
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>

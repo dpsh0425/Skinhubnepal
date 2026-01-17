@@ -3,12 +3,19 @@
 import Link from 'next/link'
 import { useCartStore } from '@/lib/store/cartStore'
 import { ShoppingCart } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 export const StickyCart = () => {
   const itemCount = useCartStore(state => state.getItemCount())
   const total = useCartStore(state => state.getTotal())
+  const [mounted, setMounted] = useState(false)
 
-  if (itemCount === 0) return null
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Don't render until after hydration to prevent mismatch
+  if (!mounted || itemCount === 0) return null
 
   return (
     <Link

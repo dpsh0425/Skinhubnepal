@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { uploadMultipleImages } from '@/lib/utils/imgbb'
 import { setDocument } from '@/lib/utils/firestore'
+import { validateAndNormalizeSkinTypes } from '@/lib/utils/product'
 import { Product } from '@/lib/types'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -47,7 +48,7 @@ export default function NewProductPage() {
         images: imageUrls,
         brand: formData.brand,
         category: formData.category,
-        skinType: formData.skinType.split(',').map(s => s.trim()),
+        skinType: validateAndNormalizeSkinTypes(formData.skinType),
         ingredients: formData.ingredients.split(',').map(i => i.trim()),
         usageInstructions: formData.usageInstructions,
         rating: 0,

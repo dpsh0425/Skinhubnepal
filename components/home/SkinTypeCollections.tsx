@@ -52,8 +52,16 @@ export const SkinTypeCollections = () => {
   }, [])
 
   const getProductsBySkinType = (skinType: string) => {
-    return products.filter(p => p.skinType.includes(skinType))
+    return products.filter(p => 
+      p.skinType.some(type => type.toLowerCase() === skinType.toLowerCase())
+    )
   }
+
+  // Only show skin types that have products
+  const availableSkinTypes = skinTypes.filter(type => {
+    const typeProducts = getProductsBySkinType(type.slug)
+    return typeProducts.length > 0
+  })
 
   return (
     <section className="mb-16">
@@ -67,7 +75,7 @@ export const SkinTypeCollections = () => {
         <p className="text-gray-600 text-lg">Find products perfect for your unique skin</p>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-        {skinTypes.map((type, index) => {
+        {availableSkinTypes.map((type, index) => {
           const typeProducts = getProductsBySkinType(type.slug)
           const featuredProduct = typeProducts[0]
 
@@ -89,6 +97,7 @@ export const SkinTypeCollections = () => {
                       src={featuredProduct.images[0]}
                       alt={featuredProduct.name}
                       fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

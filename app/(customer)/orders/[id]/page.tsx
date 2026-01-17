@@ -15,13 +15,16 @@ import toast from 'react-hot-toast'
 export default function OrderDetailsPage() {
   const params = useParams()
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const orderId = params.id as string
   const [order, setOrder] = useState<Order | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isCancelling, setIsCancelling] = useState(false)
 
   useEffect(() => {
+    // Wait for auth to finish loading before checking
+    if (loading) return
+    
     if (!user) {
       router.push('/auth/login')
       return
@@ -38,7 +41,7 @@ export default function OrderDetailsPage() {
     }
 
     fetchOrder()
-  }, [orderId, user, router])
+  }, [orderId, user, router, loading])
 
   const handleCancelOrder = async () => {
     if (!order) return
@@ -67,12 +70,18 @@ export default function OrderDetailsPage() {
     }
   }
 
-  if (!user || isLoading) {
+  // Show loading while fetching order
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Loading...</p>
       </div>
     )
+  }
+
+  // If no user, redirect is handled in useEffect
+  if (!user) {
+    return null
   }
 
   if (!order) {
@@ -108,6 +117,7 @@ export default function OrderDetailsPage() {
                         src={item.product.images[0] || '/placeholder-product.jpg'}
                         alt={item.product.name}
                         fill
+                        sizes="80px"
                         className="object-cover rounded"
                       />
                     </div>

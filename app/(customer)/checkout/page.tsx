@@ -21,7 +21,7 @@ import { CreditCard, Wallet, Smartphone, Banknote } from 'lucide-react'
 
 export default function CheckoutPage() {
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const items = useCartStore(state => state.items)
   const getTotal = useCartStore(state => state.getTotal)
   const clearCart = useCartStore(state => state.clearCart)
@@ -31,6 +31,9 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
+    // Wait for auth to finish loading before checking
+    if (loading) return
+    
     if (!user) {
       router.push('/auth/login')
       return
@@ -45,9 +48,9 @@ export default function CheckoutPage() {
       }
     }
     fetchUserData()
-  }, [user, router])
+  }, [user, router, loading])
 
-  if (!user || !userData) {
+  if (loading || !user || !userData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p>Loading...</p>

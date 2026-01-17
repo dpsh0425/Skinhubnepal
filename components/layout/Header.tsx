@@ -4,13 +4,18 @@ import Link from 'next/link'
 import { useAuth } from '@/lib/hooks/useAuth'
 import { useCartStore } from '@/lib/store/cartStore'
 import { ShoppingCart, User, Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Logo } from './Logo'
 
 export const Header = () => {
-  const { user } = useAuth()
+  const { user, loading } = useAuth()
   const itemCount = useCartStore(state => state.getItemCount())
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100">
@@ -34,7 +39,16 @@ export const Header = () => {
               Products
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all" />
             </Link>
-            {user ? (
+            {!mounted || loading ? (
+              // Show login link during SSR and initial load to prevent hydration mismatch
+              <Link 
+                href="/auth/login" 
+                className="text-gray-700 hover:text-primary-600 font-medium transition-colors relative group"
+              >
+                Login
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary-600 group-hover:w-full transition-all" />
+              </Link>
+            ) : user ? (
               <>
                 <Link 
                   href="/orders" 
@@ -100,7 +114,16 @@ export const Header = () => {
             >
               Products
             </Link>
-            {user ? (
+            {!mounted || loading ? (
+              // Show login link during SSR and initial load to prevent hydration mismatch
+              <Link
+                href="/auth/login"
+                className="block py-2.5 px-3 text-gray-700 hover:text-primary-600 hover:bg-gray-50 rounded-lg font-medium transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Login
+              </Link>
+            ) : user ? (
               <>
                 <Link
                   href="/orders"

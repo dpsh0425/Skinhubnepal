@@ -11,10 +11,19 @@ interface CartStore {
   getItemCount: () => number
 }
 
+// Initialize cart from localStorage only on client side
+const getInitialItems = (): CartItem[] => {
+  if (typeof window === 'undefined') return []
+  try {
+    const stored = localStorage.getItem('skinhub-cart')
+    return stored ? JSON.parse(stored) : []
+  } catch {
+    return []
+  }
+}
+
 export const useCartStore = create<CartStore>((set, get) => ({
-  items: typeof window !== 'undefined' 
-    ? JSON.parse(localStorage.getItem('skinhub-cart') || '[]')
-    : [],
+  items: getInitialItems(),
   addItem: (product, variant, quantity = 1) => {
     const items = get().items
     const existingItem = items.find(item => item.variantId === variant.id)

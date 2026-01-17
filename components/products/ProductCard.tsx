@@ -14,12 +14,14 @@ interface ProductCardProps {
   product: Product
   variant?: 'default' | 'compact' | 'featured'
   onQuickView?: (product: Product) => void
+  priority?: boolean
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({ 
   product, 
   variant = 'default',
-  onQuickView 
+  onQuickView,
+  priority = false
 }) => {
   const addItem = useCartStore(state => state.addItem)
   const [isWishlisted, setIsWishlisted] = useState(false)
@@ -100,6 +102,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               src={product.images[0] || '/placeholder-product.jpg'}
               alt={product.name}
               fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              priority={priority}
               className={`object-cover transition-transform duration-500 group-hover:scale-110 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
@@ -165,6 +169,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               src={product.images[0] || '/placeholder-product.jpg'}
               alt={product.name}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              priority={priority}
               className={`object-cover transition-transform duration-700 group-hover:scale-125 ${
                 imageLoaded ? 'opacity-100' : 'opacity-0'
               }`}
@@ -256,6 +262,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             src={product.images[0] || '/placeholder-product.jpg'}
             alt={product.name}
             fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            priority={priority}
             className={`object-cover transition-transform duration-700 group-hover:scale-110 ${
               imageLoaded ? 'opacity-100' : 'opacity-0'
             }`}
